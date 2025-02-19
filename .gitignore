@@ -3,9 +3,9 @@ venv/
 build/
 __pycache__/
 .idea/
-auction_data/
+auction_data/*
 !auction_data/.gitkeep
-cleaned_data/
+cleaned_data/*
 !cleaned_data/.gitkeep
 auction_house.png
 current_screen.png

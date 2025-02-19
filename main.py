@@ -546,3 +546,4 @@ if __name__ == '__main__':
                                             )
     keyboard.add_hotkey('alt+.', game_api.pauseAudio)
     webview.start()
+

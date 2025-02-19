@@ -1,0 +1,885 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 设置字体和背景 */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    position: relative;
+    text-align: center;
+
+    background-image: url('image.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+
+    background-color: rgba(0, 0, 0, 0.7);  /* 设置半透明的背景颜色 */
+    background-blend-mode: overlay;       /* 选择适合的混合模式 */
+    position: relative;
+}
+
+/* 光亮文本效果 */
+h1, h2, h3, p, a {
+    color: #fff;
+    background: linear-gradient(45deg, #ff007f, #ff8c00, #ffeb3b);
+    background-clip: text;
+    -webkit-background-clip: text;
+    text-shadow: 0 0 8px rgba(255, 0, 127, 0.6), 0 0 15px rgba(255, 0, 127, 0.4), 0 0 30px rgba(255, 0, 127, 0.3);
+}
+
+/* 扫描线条效果 */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.1) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Main Container */
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo */
+.logo {
+    font-size: 1.5rem;
+    color: #ffeb3b; /* 光亮黄色 */
+    background: linear-gradient(45deg, #ff007f, #ff8c00, #ffeb3b);
+    background-clip: text;
+    -webkit-background-clip: text;
+    text-shadow: 0 0 10px rgba(255, 0, 127, 0.6), 0 0 15px rgba(255, 0, 127, 0.4), 0 0 20px rgba(255, 0, 127, 0.3);
+}
+
+/* Header Buttons */
+.header-right button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #ffeb3b; /* 光亮黄色 */
+    cursor: pointer;
+    padding: 5px 10px;
+    margin-left: 10px;
+    text-shadow: 0 0 8px rgba(255, 0, 127, 0.6), 0 0 15px rgba(255, 0, 127, 0.4);
+}
+
+.header-right button:hover {
+    background-color: #ddd;
+    border-radius: 50%;
+}
+
+/* Main Content Section */
+.main-content-container {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    overflow: hidden; /* 防止溢出 */
+}
+
+/* Sidebar */
+.sidebar {
+    width: 120px;
+    color: white;
+    padding-top: 20px;
+    position: relative;
+    text-shadow: 0 0 8px rgba(255, 0, 127, 0.6), 0 0 15px rgba(255, 0, 127, 0.4);
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 15px;
+    text-align: center;
+    margin-right: 4px;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    display: block;
+    text-shadow: 0 0 8px rgba(255, 0, 127, 0.6), 0 0 15px rgba(255, 0, 127, 0.4);
+}
+
+/* 悬停效果 */
+.sidebar ul li:hover {
+    background-color: rgba(44, 44, 44, 0.6); /* 提高透明度 */
+    box-shadow: 0 4px 15px rgba(255, 126, 95, 0.6); /* 阴影效果 */
+    transform: scale(1.05); /* 放大效果 */
+}
+
+/* 老电视闪烁效果 */
+@keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        text-shadow: 0 0 8px rgba(255, 0, 127, 0.6), 0 0 15px rgba(255, 0, 127, 0.4);
+        opacity: 1;
+    }
+    20%, 24%, 55% {
+        text-shadow: none;
+        opacity: 0.4;
+    }
+}
+
+.sidebar ul li a:hover {
+    animation: flicker 4s infinite;
+    font-weight: bold;
+    color: #ffffff; /* 确保文本颜色在任何背景下都清晰可见 */
+}
+
+/* Main Content */
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    border-left: 1px solid rgba(221,221,221,0.1);
+}
+
+.page-content {
+    display: none;
+}
+
+.main-content h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #ffeb3b; /* 光亮黄色 */
+    background: linear-gradient(45deg, #ff007f, #ff8c00, #ffeb3b);
+    background-clip: text;
+    -webkit-background-clip: text;
+    text-shadow: 0 0 8px rgba(255, 0, 127, 0.6), 0 0 15px rgba(255, 0, 127, 0.4), 0 0 30px rgba(255, 0, 127, 0.3);
+}
+
+.main-content p {
+    font-size: 1.2rem;  /* 设置文本大小为 1.2rem（相对于根元素字体大小） */
+    color: #666;        /* 设置文本颜色为灰色 (#666) */
+    margin-bottom: 30px;/* 设置段落底部外边距为 30px，给段落与下一个元素之间留出空间 */
+}
+
+#autoUploadPage p{
+
+
+    font-size: 1rem;  /* 设置文本大小为 1.2rem（相对于根元素字体大小） */
+    color: #666;        /* 设置文本颜色为灰色 (#666) */
+    margin-bottom: 10px;/* 设置段落底部外边距为 30px，给段落与下一个元素之间留出空间 */
+
+
+}
+
+.button {
+    background-color: rgba(16, 16, 16, 0.8); /* 半透明深灰色背景模拟CRT显示 */
+    color: #d3d3d3; /* 使用浅灰色文字 */
+    padding: 12px 28px;
+    border: none;
+    border-radius: 15px / 100%; /* 高度圆角模仿CRT屏幕的弯曲外观 */
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(211, 211, 211, 0.1) inset; /* 浅灰色内阴影 */
+    transition: all 0.3s ease, color 0s;
+}
+
+/* 扫描线效果 */
+.button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 0.1) 1px, /* 更细的线条 */
+        rgba(255, 255, 255, 0) 2px /* 调整这个值可以改变线条之间的间距 */
+    );
+    opacity: 0.7; /* 控制扫描线的整体透明度 */
+    z-index: 1;
+}
+
+.button:hover {
+    background-color: rgba(26, 26, 26, 0.8); /* 稍微更深一点的半透明背景 */
+    color: #f0f0f0; /* 更亮的灰色 */
+    box-shadow: 0 0 30px rgba(240, 240, 240, 0.2) inset;
+}
+
+.button:active {
+    background-color: rgba(12, 12, 12, 0.8); /* 按下时更深的颜色 */
+    box-shadow: 0 0 15px rgba(240, 240, 240, 0.1) inset;
+    transform: translateY(1px); /* 模拟按下效果 */
+}
+
+/* 动态扫描效果 */
+.button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px; /* 设置扫描线的高度 */
+    background-color: rgba(255, 255, 255, 0.4); /* 半透明白色 */
+    transform: translateY(-100%);
+    transition: transform 1s ease-out;
+}
+
+.button:hover::before {
+    transform: translateY(100%);
+}
+
+
+/* Output Box */
+.output-box {
+    width: 100%;        /* 宽度为 100% */
+    max-width: 600px;   /* 最大宽度限制为 600px（可根据需求调整） */
+    margin: 20px auto;  /* 上下间距20px，左右自动居中 */
+
+    height: 180px;
+    max-height: 180px;
+    overflow-y: auto;   /* 超出内容可滚动 */
+
+    background-color: rgba(0, 0, 0, 0.5); /* 黑色半透明 */
+    margin-top: 20px;
+    padding: 10px;   /* 内边距 */
+
+}
+
+.output-box p {
+    margin: 3px 0;
+    color: #fff; /* 设置消息文本为白色 */
+    text-shadow: none; /* 移除文本的光影效果 */
+    text-align: left;
+}
+
+.output-box::-webkit-scrollbar {
+    width: 8px;
+}
+
+.output-box::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.5); /* 滚动条颜色，带透明度 */
+    border-radius: 4px;
+}
+
+.output-box::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.2); /* 滚动条轨道颜色，带透明度 */
+    border-radius: 4px;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        padding: 10px 0;
+    }
+
+    .sidebar ul li {
+        display: inline-block;
+        width: 50%;
+    }
+
+    .main-content {
+        padding: 20px;
+    }
+}
+
+
+
+
+    /* 表格容器 */
+    .table-container {
+        margin-top: 20px;
+        overflow-x: auto;
+        max-height: 400px; /* 设置最大高度 */
+        overflow-y: auto;  /* 当内容超出时出现垂直滚动条 */
+        background-color: rgba(0, 0, 0, 0.6);  /* 半透明的黑色背景 */
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4); /* 弱紫色阴影效果 */
+
+    }
+
+    .table-container::-webkit-scrollbar {
+        width: 8px; /* 滚动条宽度 */
+    }
+
+    .table-container::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.5); /* 滚动条颜色，带透明度 */
+        border-radius: 4px; /* 圆角效果 */
+    }
+
+    .table-container::-webkit-scrollbar-track {
+        background-color: rgba(0, 0, 0, 0.2); /* 滚动条轨道颜色，带透明度 */
+        border-radius: 4px; /* 圆角效果 */
+    }
+
+    /* 表格样式 */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+
+        color: white;
+        border-collapse: collapse; /* 合并边框 */
+    }
+
+#itemHeader {
+    width: 150px; /* 设置物品列的宽度 */
+    white-space: nowrap; /* 防止内容换行 */
+    overflow: hidden; /* 超出部分隐藏 */
+    text-overflow: ellipsis; /* 显示省略号 */
+}
+
+#priceHeader {
+    width: 50px; /* 设置物品列的宽度 */
+    white-space: nowrap; /* 防止内容换行 */
+    overflow: hidden; /* 超出部分隐藏 */
+    text-overflow: ellipsis; /* 显示省略号 */
+}
+
+
+
+    table th, table td {
+        padding: 10px;
+        border: 1px solid rgba(221, 221, 221, 0.2);
+        background-color: rgba(44, 44, 44, 0.8); /* 深灰色背景 */
+        color: #ddd;
+        text-shadow: 0 0 8px rgba(255, 0, 127, 0.6), 0 0 15px rgba(255, 0, 127, 0.4); /* 给文本加上霓虹光效 */
+    }
+
+    table th {
+        background-color: rgba(255, 255, 255, 0.1); /* 浅灰色背景 */
+        color: #ffeb3b; /* 黄色高亮 */
+        font-weight: bold;
+        text-shadow: 0 0 8px rgba(255, 0, 127, 0.6), 0 0 15px rgba(255, 0, 127, 0.4);
+    }
+
+    table td {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    /* 弹窗样式 */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.7); /* 半透明的黑色背景 */
+        padding-top: 60px;
+    }
+
+    .modal-content {
+        background-color: #222;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 70%;
+        max-width: 800px;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(255, 0, 127, 0.6); /* 发光阴影 */
+        color: #fff;
+    }
+
+    .modal-header {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+        color: #ffeb3b; /* 黄色高亮 */
+        text-shadow: 0 0 8px rgba(255, 0, 127, 0.6), 0 0 15px rgba(255, 0, 127, 0.4);
+    }
+
+    .modal-close {
+        color: #aaa;
+        font-size: 1.5em;
+        font-weight: bold;
+        position: absolute;
+        right: 20px;
+        top: 10px;
+    }
+
+    .modal-close:hover,
+    .modal-close:focus {
+        color: #ff007f;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    /* 缩小图表尺寸 */
+    #priceChart {
+        width: 100%;
+        height: 300px;
+        border-radius: 10px;
+        background-color: rgba(0, 0, 0, 0.6);  /* 添加背景色增强效果 */
+        box-shadow: 0 0 20px rgba(255, 0, 127, 0.6); /* 发光阴影效果 */
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+        .container {
+            width: 95%;
+        }
+
+        table th, table td {
+            padding: 8px;
+        }
+
+        .modal-content {
+            width: 90%; /* 适应小屏幕 */
+        }
+    }
+
+/* 搜索框样式 */
+#itemSearch {
+    width: 100%;
+    padding: 8px;
+    background-color: rgba(255, 255, 255, 0.2); /* 半透明背景 */
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #ffeb3b; /* 黄色高亮 */
+    text-shadow: 0 0 8px rgba(255, 0, 127, 0.6), 0 0 15px rgba(255, 0, 127, 0.4);
+    border-radius: 5px;
+}
+#itemSearch::placeholder {
+    color: #ffeb3b; /* 黄色高亮 */
+    text-shadow: 0 0 8px rgba(255, 0, 127, 0.6), 0 0 15px rgba(255, 0, 127, 0.4);
+}
+
+/* 下拉菜单样式 */
+#server {
+    padding: 8px;
+    background-color: rgba(255, 255, 255, 0.2); /* 半透明背景 */
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #ffeb3b; /* 黄色高亮 */
+    text-shadow: 0 0 8px rgba(255, 0, 127, 0.6), 0 0 15px rgba(255, 0, 127, 0.2);
+    border-radius: 5px;
+}
+#server option {
+    background-color: rgba(0, 0, 0, 0.3); /* 设置选项背景为半透明黑色 */
+    color: #fff; /* 选项文字颜色 */
+}
+
+
+
+
+
+/* 自动播放页面 */
+#autoPlayPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+#autoPlayPage p{
+    font-size: 1rem;  /* 设置文本大小为 1.2rem（相对于根元素字体大小） */
+    color: #666;        /* 设置文本颜色为灰色 (#666) */
+    margin-bottom: 10px;/* 设置段落底部外边距为 30px，给段落与下一个元素之间留出空间 */
+}
+
+#songList {
+    max-height: 300px;       /* 设置最大高度 */
+    overflow-y: auto;        /* 超出部分显示滚动条 */
+    padding-right: 20px;     /* 给滚动条留出空间 */
+    margin-top: 10px;
+    list-style-type: none;   /* 去除默认的列表样式 */
+    text-align: left;        /* 文本左对齐 */
+    word-wrap: break-word;   /* 自动换行 */
+    background-color: rgba(0, 0, 0, 0.3); /* 背景色 */
+}
+
+/* 文件列表项 */
+#songList li {
+    padding: 10px;
+    border: 1px solid rgba(221, 221, 221, 0.2);
+    margin-bottom: 5px;       /* 每个文件之间留点空隙 */
+    color: #fff;              /* 文件名文字为白色 */
+    text-shadow: 0 0 8px rgba(255, 0, 127, 0.6), 0 0 15px rgba(255, 0, 127, 0.4);
+    word-wrap: break-word;    /* 让过长的文件名换行 */
+    white-space: normal;      /* 允许换行 */
+}
+
+/* 如果想要用水平滚动条来显示文件名 */
+#songList li {
+    white-space: nowrap;      /* 不允许换行 */
+    overflow: hidden;         /* 隐藏溢出的部分 */
+    text-overflow: ellipsis;  /* 溢出部分显示省略号 */
+    width: 100%;              /* 使文件项的宽度最大化 */
+    display: block;
+}
+
+/* 文件列表滚动条样式 */
+#songList::-webkit-scrollbar {
+    width: 8px; /* 滚动条宽度 */
+}
+
+#songList::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.5); /* 滚动条的颜色，带透明度 */
+    border-radius: 4px; /* 滚动条圆角效果 */
+}
+
+#songList::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.2); /* 滚动条轨道颜色，带透明度 */
+    border-radius: 4px; /* 轨道的圆角效果 */
+}
+
+
+/* 确保按钮与文件列表不重叠 */
+#autoPlayPage {
+    position: relative;
+    z-index: 10;
+}
+
+
+/* 按钮样式 */
+#autoPlayPage button {
+    background-color: rgba(16, 16, 16, 0.8); /* 半透明深灰色背景模拟CRT显示 */
+    color: #d3d3d3; /* 使用浅灰色文字 */
+    padding: 12px 28px;
+    border: none;
+    border-radius: 15px / 100%; /* 高度圆角模仿CRT屏幕的弯曲外观 */
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(211, 211, 211, 0.1) inset; /* 浅灰色内阴影 */
+    transition: all 0.3s ease, color 0s;
+    margin-top: 20px;  /* 按钮与其他内容的间距 */
+}
+/* 扫描线效果 */
+#autoPlayPage button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 0.1) 1px, /* 更细的线条 */
+        rgba(255, 255, 255, 0) 2px /* 调整这个值可以改变线条之间的间距 */
+    );
+    opacity: 0.7; /* 控制扫描线的整体透明度 */
+    z-index: 1;
+}
+
+#autoPlayPage button:hover {
+    background-color: rgba(26, 26, 26, 0.8); /* 稍微更深一点的半透明背景 */
+    color: #f0f0f0; /* 更亮的灰色 */
+    box-shadow: 0 0 30px rgba(240, 240, 240, 0.2) inset;
+}
+
+#autoPlayPage button:active {
+    background-color: rgba(12, 12, 12, 0.8); /* 按下时更深的颜色 */
+    box-shadow: 0 0 15px rgba(240, 240, 240, 0.1) inset;
+    transform: translateY(1px); /* 模拟按下效果 */
+}
+
+/* 动态扫描效果 */
+#autoPlayPage button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px; /* 设置扫描线的高度 */
+    background-color: rgba(255, 255, 255, 0.4); /* 半透明白色 */
+    transform: translateY(-100%);
+    transition: transform 1s ease-out;
+}
+
+#autoPlayPage button:hover::before {
+    transform: translateY(100%);
+}
+
+
+/* 播放倍数调节滑动条 */
+#autoPlayPage input[type="range"] {
+    width: 200px; /* 固定宽度 */
+    margin-top: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#autoPlayPage input[type="range"]::-webkit-slider-runnable-track {
+    height: 10px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+}
+
+#autoPlayPage input[type="range"]::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+    background-color: #ffeb3b;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0 0 8px rgba(255, 0, 127, 0.6), 0 0 15px rgba(255, 0, 127, 0.4);
+}
+
+label {
+    color: #ffeb3b;
+    text-shadow: 0 0 8px rgba(255, 0, 127, 0.6), 0 0 15px rgba(255, 0, 127, 0.4);
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+/* 播放倍数值 */
+#autoPlayPage #playbackRateValue {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    color: #ffeb3b; /* 光亮黄色 */
+    text-shadow: 0 0 8px rgba(255, 0, 127, 0.6), 0 0 15px rgba(255, 0, 127, 0.4);
+    display: inline-block;
+    margin-left: 10px;
+    white-space: nowrap;  /* 防止文字换行 */
+    min-width: 40px; /* 设置一个最小宽度 */
+    text-align: center; /* 确保文本居中 */
+}
+
+/* 状态文本 */
+#autoPlayPage #status {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: #ffeb3b;
+    text-shadow: 0 0 8px rgba(255, 0, 127, 0.6), 0 0 15px rgba(255, 0, 127, 0.4);
+    display: block;
+    text-align: center;
+}
+
+/* 容器对齐方式 */
+#autoPlayPage .playback-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* 以下是生成蓝图部分 */
+/* 图片区域容器 */
+.images-section {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* 每张图片的容器 */
+.image-container {
+    position: relative;
+    width: 260px;
+    height: 190px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); /* 光晕效果 */
+    transition: all 0.3s ease;
+}
+
+.image-container:hover {
+    transform: scale(1.05); /* 鼠标悬浮时轻微放大 */
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.7); /* 鼠标悬浮时增强光晕 */
+}
+
+/* 预览图片的占位样式 */
+.preview {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.preview img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* 保持比例，不拉伸 */
+}
+
+/* 隐藏原图时的样式 */
+.image-placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3); /* 背景颜色 */
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* 自定义的拖拽边框样式 */
+#originalContainer {
+    position: relative;
+    width: 260px;
+    height: 190px;
+    border: 2px dashed #888;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: border-color 0.3s ease;
+}
+
+#originalContainer.dragging {
+    border-color: #00ff00; /* 拖拽时改变边框颜色 */
+}
+
+/* 参数调整样式 */
+
+
+
+#createBlueprintPage input[type="range"] {
+    width: 200px;
+    margin-top: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    cursor: pointer;
+    appearance: auto;
+}
+
+#createBlueprintPage input[type="range"]:focus {
+    outline: none;
+}
+
+#createBlueprintPage input[type="range"]::-webkit-slider-thumb {
+    background-color: #00ff00;
+    border: 2px solid #00cc00;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+}
+
+#createBlueprintPage input[type="range"]:active::-webkit-slider-thumb {
+    background-color: #ff6600;
+}
+
+/* 显示的数值 */
+#createBlueprintPage span {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #ffeb3b; /* 光亮黄色 */
+    text-shadow: 0 0 8px rgba(255, 0, 127, 0.6), 0 0 15px rgba(255, 0, 127, 0.4);
+    display: inline-block;
+    margin-left: 10px;
+    white-space: nowrap;  /* 防止文字换行 */
+    min-width: 66px; /* 设置一个最小宽度 */
+    text-align: center; /* 确保文本居中 */
+}
+
+/* 按钮样式 */
+#createBlueprintPage button {
+    background-color: rgba(16, 16, 16, 0.8); /* 半透明深灰色背景模拟CRT显示 */
+    color: #d3d3d3; /* 使用浅灰色文字 */
+    padding: 12px 28px;
+    border: none;
+    border-radius: 15px / 100%; /* 高度圆角模仿CRT屏幕的弯曲外观 */
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(211, 211, 211, 0.1) inset; /* 浅灰色内阴影 */
+    transition: all 0.3s ease, color 0s;
+    margin-top: 20px;  /* 按钮与其他内容的间距 */
+}
+/* 扫描线效果 */
+#createBlueprintPage button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 0.1) 1px, /* 更细的线条 */
+        rgba(255, 255, 255, 0) 2px /* 调整这个值可以改变线条之间的间距 */
+    );
+    opacity: 0.7; /* 控制扫描线的整体透明度 */
+    z-index: 1;
+}
+
+#createBlueprintPage button:hover {
+    background-color: rgba(26, 26, 26, 0.8); /* 稍微更深一点的半透明背景 */
+    color: #f0f0f0; /* 更亮的灰色 */
+    box-shadow: 0 0 30px rgba(240, 240, 240, 0.2) inset;
+}
+
+#createBlueprintPage button:active {
+    background-color: rgba(12, 12, 12, 0.8); /* 按下时更深的颜色 */
+    box-shadow: 0 0 15px rgba(240, 240, 240, 0.1) inset;
+    transform: translateY(1px); /* 模拟按下效果 */
+}
+
+/* 动态扫描效果 */
+#createBlueprintPage button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px; /* 设置扫描线的高度 */
+    background-color: rgba(255, 255, 255, 0.4); /* 半透明白色 */
+    transform: translateY(-100%);
+    transition: transform 1s ease-out;
+}
+
+#createBlueprintPage button:hover::before {
+    transform: translateY(100%);
+}
+
+/* 信息显示 */
+#pixelInfo p {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: #ffcc00;
+}
+
+/* 小工具间的间距 */
+br {
+    margin-bottom: 10px;
+}

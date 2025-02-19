@@ -1,0 +1,21 @@
+# 游戏窗口大小（可以手动改 窗口宽、窗口高）
+game_window_width = 1936
+game_window_height = 1119
+
+# 游戏窗口内左下角用户名相对位置(已弃用)(可以手动改 含义分别是’游戏窗口左端‘到’用户名截图最左端‘的距离、窗口顶端到截图顶端、截图宽、截图高）
+# game_role_x = 78
+# game_role_y = 1083
+# game_role_width = 123
+# game_role_height = 21
+
+# 游戏窗口内右下角服务器线路时间相对位置（可以手动改 含义分别是’游戏窗口左端‘到’截图最左端‘的距离、窗口顶端到截图顶端、截图宽、截图高）
+game_server_x = 1645
+game_server_y = 1083
+game_server_width = 270
+game_server_height = 26
+
+# 游戏窗口内交易行物品列表相对位置（可以手动改 含义分别是’游戏窗口左端‘到’截图最左端‘的距离、窗口顶端到截图顶端、截图宽、截图高）
+game_list_x = 475
+game_list_y = 285
+game_list_width = 1150
+game_list_height = 752

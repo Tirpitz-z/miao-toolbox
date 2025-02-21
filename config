@@ -19,3 +19,7 @@ game_list_x = 475
 game_list_y = 285
 game_list_width = 1150
 game_list_height = 752
+
+# 游戏窗口内交易行搜索框相对位置（可以手动改 含义分别是’游戏窗口左端‘到’搜索栏‘的距离、窗口顶端到‘搜索栏’的距离）
+game_search_x = 470
+game_search_y = 210

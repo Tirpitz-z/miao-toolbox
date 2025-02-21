@@ -11,6 +11,7 @@ import cv2
 import numpy as np
 import pygetwindow as gw
 import pyautogui
+import pyperclip
 import requests
 import webview
 from paddleocr import PaddleOCR
@@ -304,7 +305,78 @@ def get_list_format(midi_file, speed):
         play_list.append({'key_list': key_list, 'wait_time': wait_time})
     return play_list
 
+def get_auction_data_custom():
+    # 获取当前游戏截图
+    screenshot, game_window_x, game_window_y, game_window_width, game_window_height = take_screenshot()
+    config = load_config()
 
+    list_x = config['game_list_x']
+    list_y = config['game_list_y']
+    list_width = config['game_list_width']
+    list_height = config['game_list_height']
+
+    game_search_x = config['game_search_x']
+    game_search_y = config['game_search_y']
+
+    # 鼠标移动到搜索框
+    pyautogui.moveTo(game_window_x + game_search_x, game_window_y + game_search_y)
+    pyautogui.click()  # 点击使搜索框获得焦点
+
+    # 加载自定义物品列表
+    items = load_items_from_file('custom_items.txt')
+
+    # 创建截图文件夹 'auction_data'
+    if not os.path.exists('auction_data_custom'):
+        os.makedirs('auction_data_custom')
+    # 清空 'auction_data' 文件夹，准备下次截图
+    clear_folder('auction_data_custom')
+
+    screenshot_counter = 0
+    saved_images = []  # 用于存储所有保存的图片路径
+
+    for item in items:
+        print(item)
+        clear_search_box()
+        time.sleep(0.5)  # 等待一段时间确保准备就绪
+        write_with_delay(item)
+        time.sleep(1)  # 等待搜索结果展示
+
+        # 获取当前游戏截图
+        screenshot = take_screenshot()[0]
+        item_screenshot = screenshot.crop((list_x, list_y, list_x + list_width, list_y + list_height))
+        filename = f'auction_data_custom_{screenshot_counter}.png'
+        file_path = os.path.join('auction_data_custom', filename)
+        item_screenshot.save(file_path)
+        print(f'Saved {filename}')
+
+        saved_images.append(file_path)
+        screenshot_counter += 1
+
+    print('滚动截图循环结束')
+    return saved_images
+
+
+def load_items_from_file(file_path):
+    """从指定路径加载物品列表"""
+    with open(file_path, 'r', encoding='utf-8') as file:
+        items = [line.strip() for line in file.readlines()]
+    return items
+
+
+def clear_search_box():
+    """模拟键盘操作清空搜索框"""
+    pyautogui.click()  # 确保焦点在搜索框内
+    pyautogui.hotkey('ctrl', 'a')  # 全选
+    time.sleep(0.1)
+    pyautogui.press('backspace')  # 删除
+
+
+def write_with_delay(text):
+    """处理包含非ASCII字符的文本输入"""
+    pyperclip.copy(text)  # 将文本放入剪贴板
+    pyautogui.hotkey('ctrl', 'v')  # 使用快捷键粘贴
+    time.sleep(0.1)
+    pyautogui.press('enter')
 class GameAutomationAPI:
     def auto_upload(self):
         global ocr
@@ -534,6 +606,44 @@ class GameAutomationAPI:
             subprocess.run(["open", self.file_path])
         else:
             subprocess.run(["xdg-open", self.file_path])
+
+    def custom_upload(self):
+        global ocr
+        ocr = PaddleOCR(use_angle_cls=True, lang='ch')
+        open_game_window()
+        verify_trade_window_openness()
+        pyautogui.click()
+        pyautogui.press('esc')
+        time.sleep(2)
+        saved_images = []
+        server_info = get_server_info()
+        pyautogui.press('f')
+        time.sleep(2)
+        saved_images = get_auction_data_custom()
+        gw_window = gw.getWindowsWithTitle('妙妙工具箱')[0]
+        gw_window.activate()
+        auction_data_custom = ocr_auction_data(saved_images)
+        current_time = datetime.now().strftime("%Y%m%d%H%M%S")
+        df = data_cleaning(auction_data_custom, server_info, current_time)
+        save_cleaned_data(df, current_time)
+        # 上传
+        upload_csv(current_time)
+
+    def open_with_default_editor(self, file_name='custom_items.txt'):
+        if not os.path.exists(file_name):
+            raise FileNotFoundError(f"文件 {file_name} 未找到，请检查文件名是否正确以及文件是否存在于当前目录下。")
+
+        try:
+            # 根据操作系统选择合适的方法打开文件
+            if os.name == 'nt':  # Windows
+                os.startfile(file_name)
+            elif os.name == 'posix':  # macOS, Linux
+                subprocess.call(['open', file_name])
+            else:
+                subprocess.call(['xdg-open', file_name])
+        except Exception as e:
+            send_message("打开失败，请手动修改当前目录下的custom_items.txt文件")
+            print(f"无法打开文件 {file_name}: {e}")
 
 
 if __name__ == '__main__':

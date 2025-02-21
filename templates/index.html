@@ -39,7 +39,7 @@
             <main class="main-content">
                 <div id="homePage" class="page-content">
                     <h1>欢迎使用妙妙工具箱</h1>
-                    <p>当前版本：0.0.2</p>
+                    <p>当前版本：0.0.4</p>
                     <p class="announcement" style="color: #ff6600;"></p>
                 </div>
                 <div id="tradePage" class="page-content">
@@ -106,7 +106,11 @@
                     <p>在游戏内 呼出鼠标键 并打开交易行。</p>
                     <p>点击下方按钮开始自动扫描物价。</p>
                     <p>再次弹出妙妙工具箱之前，请不要移动鼠标，否则会打断扫描。</p>
-                    <button class="button" id="startUploadBtn">全自动上传</button>
+                    <button class="button" id="startUploadBtn">全物品扫描</button>
+                    <div class="button-combined">
+                        <button class="button combined custom-scan1" id="startUploadBtn2">自定义扫描</button>
+                        <button class="button combined" id="startUploadBtn3">编辑</button>
+                    </div>
                         <!-- 添加一个用于显示输出的div -->
                     <div id="output" class="output-box"></div>
                 </div>
@@ -424,6 +428,14 @@
             document.getElementById('startUploadBtn').onclick = function() {
                 // 调用 Python API 中的方法
                 pywebview.api.auto_upload();
+            }
+            document.getElementById('startUploadBtn2').onclick = function() {
+                // 调用 Python API 中的方法
+                pywebview.api.custom_upload();
+            }
+            document.getElementById('startUploadBtn3').onclick = function() {
+                // 调用 Python API 中的方法
+                pywebview.api.open_with_default_editor();
             }
         }
 

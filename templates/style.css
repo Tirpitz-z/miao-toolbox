@@ -193,9 +193,10 @@ body::before {
 }
 
 .button {
+    width: 170px; /* 容器宽度 */
+    height: 45px;
     background-color: rgba(16, 16, 16, 0.8); /* 半透明深灰色背景模拟CRT显示 */
     color: #d3d3d3; /* 使用浅灰色文字 */
-    padding: 12px 28px;
     border: none;
     border-radius: 15px / 100%; /* 高度圆角模仿CRT屏幕的弯曲外观 */
     cursor: pointer;
@@ -207,8 +208,37 @@ body::before {
     transition: all 0.3s ease, color 0s;
 }
 
+
+
+.button-combined {
+    width: 170px; /* 容器宽度 */
+    height: 45px;
+    display: inline-flex;
+    justify-content: center; /* 水平居中 */
+    border-radius: 15px / 100%; /* 保持圆角 */
+    overflow: hidden;
+}
+
+.button-combined .button {
+    flex-grow: 1; /* 自动根据内容扩展 */
+    border-radius: 0; /* 移除内部按钮圆角 */
+    white-space: nowrap; /* 防止文字换行 */
+    text-overflow: ellipsis; /* 超出文字时显示省略号 */
+}
+
+#startUploadBtn2 {
+    flex-basis: 75%; /* 按钮2占用容器的 90% */
+}
+.custom-scan1 {
+    padding-left: 20px; /* 调整这个值以获得你想要的效果 */
+}
+
+#startUploadBtn3 {
+    flex-basis: 25%; /* 按钮3占用容器的 10% */
+}
+
 /* 扫描线效果 */
-.button::after {
+button::after {
     content: '';
     position: absolute;
     top: 0;
@@ -226,20 +256,20 @@ body::before {
     z-index: 1;
 }
 
-.button:hover {
+button:hover {
     background-color: rgba(26, 26, 26, 0.8); /* 稍微更深一点的半透明背景 */
     color: #f0f0f0; /* 更亮的灰色 */
     box-shadow: 0 0 30px rgba(240, 240, 240, 0.2) inset;
 }
 
-.button:active {
+button:active {
     background-color: rgba(12, 12, 12, 0.8); /* 按下时更深的颜色 */
     box-shadow: 0 0 15px rgba(240, 240, 240, 0.1) inset;
     transform: translateY(1px); /* 模拟按下效果 */
 }
 
 /* 动态扫描效果 */
-.button::before {
+button::before {
     content: '';
     position: absolute;
     top: 0;
@@ -251,9 +281,15 @@ body::before {
     transition: transform 1s ease-out;
 }
 
-.button:hover::before {
+button:hover::before {
     transform: translateY(100%);
 }
+
+#startUploadBtn3:hover {
+    background: rgba(0, 255, 255, 0.1);
+    color: #ccff66;
+}
+
 
 
 /* Output Box */

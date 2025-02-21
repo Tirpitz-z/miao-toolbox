@@ -5,6 +5,8 @@ __pycache__/
 .idea/
 auction_data/*
 !auction_data/.gitkeep
+auction_data_custom/*
+!auction_data_custom/.gitkeep
 cleaned_data/*
 !cleaned_data/.gitkeep
 auction_house.png

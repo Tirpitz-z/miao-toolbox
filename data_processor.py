@@ -26,25 +26,34 @@ class DataProcessor:
             raise ValueError(f"无法解析的价格字符串: {salary_str}")
 
     @staticmethod
-    def _extract_server_name(server_info):
-        elements = server_info.split()
-
-        for element in elements:
-            if element == "剑诛仙":
-                return "一剑诛仙"
-
-            if element == "君临夭下":
-                return "君临天下"
-
-            if element == "明月夭涯":
-                return "明月天涯"
-
-            if element == "夭下无双":
-                return "天下无双"
-
-            if all('\u4e00' <= char <= '\u9fa5' for char in element) and "线路" not in element and len(element) == 4:
-                return element.strip()
-
+    def extract_server_name(server_info):
+        server_names = [
+            "一剑诛仙",
+            "风华绝代",
+            "世外桃源",
+            "瑶光沁雪",
+            "浮生若梦",
+            "风灵月影",
+            "君临天下",
+            "唯我独尊",
+            "明月天涯",
+            "天下无双",
+            "九霄龙吟",
+            "情撼九天",
+            "绮梦天华",
+            "龙渊墨雪",
+            "六道轮回",
+            "紫电青霜",
+            "三界凡尘",
+            "金风玉露",
+            "幻月御风"]
+        for name in server_names:
+            match_count = 0
+            for char in name:
+                if char in server_info:
+                    match_count += 1
+                if match_count >= len(name) - 1:
+                    return name
         return None
 
     def _process_matches(self, matches):
@@ -92,7 +101,7 @@ if __name__ == "__main__":
     '''
 
     # 示例服务器信息
-    server_info = "15 qr 16 阿 阿巴 阿巴阿 一剑诛仙仙 0:09:36"
+    server_info = "15 qr 16 阿 阿巴 050一剑诛仙线路01 0:09:36"
     current_time = '20250125214636'
     # 创建 DataFrame
     df = processor.create_dataframe(auction_data, server_info, current_time)

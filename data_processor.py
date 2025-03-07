@@ -70,7 +70,7 @@ class DataProcessor:
     def create_dataframe(self, raw_data, server_info, current_time):
         matches = self._extract_records(raw_data)
         cleaned_data = self._process_matches(matches)
-        server_name = self._extract_server_name(server_info)
+        server_name = self.extract_server_name(server_info)
         columns = ["物品", "品质", "等级", "数量", "一口价", "服务器", "时间"]
 
         # 将服务器名称添加到每一行数据中

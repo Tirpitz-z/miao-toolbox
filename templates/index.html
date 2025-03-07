@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>游戏自动化工具</title>
+    <link rel="stylesheet" href="style.css">
+        <!-- 引入Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">妙妙工具箱 logo</div>
+            <div class="header-right">
+<!--                <button class="icon-btn">头像</button>-->
+<!--                <button class="icon-btn">设置</button>-->
+            </div>
+        </header>
+
+
+        <!-- Main Container -->
+        <div class="main-content-container">
+            <!-- Sidebar -->
+            <nav class="sidebar">
+                <ul>
+                    <li><a href="#" onclick="showPage('home')">主页</a></li>
+                    <li><a href="#" onclick="showPage('trade')">交易行</a></li>
+                    <li><a href="#" onclick="showPage('autoUpload')">上传物价</a></li>
+                    <li><a href="#" onclick="showPage('autoPlay')">吹拉弹唱</a></li>
+                    <li><a href="#" onclick="showPage('createBlueprint')">生成蓝图</a></li>
+                </ul>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <div id="homePage" class="page-content">
+                    <h1>欢迎使用妙妙工具箱</h1>
+                    <p>当前版本：0.0.4</p>
+                    <p class="announcement" style="color: #ff6600;"></p>
+                </div>
+                <div id="tradePage" class="page-content">
+                    <div class="result" id="latestPriceResult">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                            <th id="itemHeader"><input type="text" id="itemSearch" placeholder="物品" onkeyup="filterItems()"></th>
+                            <th>品质</th>
+                            <th>等级</th>
+                            <th>数量</th>
+                            <th id="priceHeader">价格</th>
+                            <th><select id="server" onchange="getLatestPrices()">
+                        <option value="一剑诛仙">一剑诛仙</option>
+                        <option value="风华绝代">风华绝代</option>
+                        <option value="世外桃源">世外桃源</option>
+                        <option value="瑶光沁雪">瑶光沁雪</option>
+                        <option value="浮生若梦">浮生若梦</option>
+                        <option value="星河入梦">星河入梦</option>
+                        <option value="风灵月影">风灵月影</option>
+                        <option value="君临天下">君临天下</option>
+                        <option value="唯我独尊">唯我独尊</option>
+                        <option value="明月天涯">明月天涯</option>
+                        <option value="天下无双">天下无双</option>
+                        <option value="九霄龙吟">九霄龙吟</option>
+                        <option value="情撼九天">情撼九天</option>
+                        <option value="绮梦天华">绮梦天华</option>
+                        <option value="龙渊墨雪">龙渊墨雪</option>
+                        <option value="六道轮回">六道轮回</option>
+                        <option value="紫电青霜">紫电青霜</option>
+                        <option value="三界凡尘">三界凡尘</option>
+                        <option value="金风玉露">金风玉露</option>
+                        <option value="幻月御风">幻月御风</option>
+
+            </select></th>
+                            <th>时间</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="priceData">
+                                    <!-- 物品价格数据将填充在这里 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Modal 弹窗 -->
+                    <div id="priceHistoryModal" class="modal" onclick="closeModal(event)">
+                        <div class="modal-content" onclick="event.stopPropagation()">
+                            <span class="modal-close" onclick="closeModal()">&times;</span>
+                            <div class="modal-header" id="modalTitle"></div>
+                            <canvas id="priceChart"></canvas>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div id="autoUploadPage" class="page-content">
+                    <p>请先完成以下设置：</p>
+                    <p>1.以管理员身份运行妙妙工具箱。</p>
+                    <p>2.游戏分辨率设置为1920*1080。</p>
+                    <p>3.确保按F键为打开交易行。</p>
+                    <p>在游戏内 呼出鼠标键 并打开交易行。</p>
+                    <p>点击下方按钮开始自动扫描物价。</p>
+                    <p>再次弹出妙妙工具箱之前，请不要移动鼠标，否则会打断扫描。</p>
+                    <button class="button" id="startUploadBtn">全物品扫描</button>
+                    <div class="button-combined">
+                        <button class="button combined custom-scan1" id="startUploadBtn2">自定义扫描</button>
+                        <button class="button combined" id="startUploadBtn3">编辑</button>
+                    </div>
+                        <!-- 添加一个用于显示输出的div -->
+                    <div id="output" class="output-box"></div>
+                </div>
+
+
+
+                <div id="autoPlayPage" class="page-content">
+                    <p>1.以管理员身份运行妙妙工具箱。2.游戏乐器键位设置为默认。</p>
+                    <p></p>
+                    <p></p>
+                    <p>打开演奏界面 再双击乐谱文件即可演奏。播放/暂停快捷键为 Alt+.</p>
+                    <p></p>
+                    <ul id="songList">
+                    <!-- 歌曲列表将通过 JavaScript 动态加载 -->
+                    </ul>
+
+                    <button onclick="togglePlayPause()">播放/暂停</button>
+                    <div id="status">状态: 停止</div>
+                    <label for="playbackRate">播放倍数: </label>
+                    <input type="range" id="playbackRate" min="0.5" max="1.5" step="0.1" value="1.0">
+                    <span id="playbackRateValue">1.0x</span>
+
+                </div>
+
+
+                <div id="createBlueprintPage" class="page-content">
+
+
+                    <!-- 原图和生成图展示  -->
+                    <div class="images-section">
+                        <div class="image-container" id="originalContainer">
+                            <div class="preview">
+                                <img id="originalImg" src="#" alt="原图" class="image-placeholder" style="visibility: hidden;">
+                            </div>
+                        </div>
+                        <div class="image-container" id="previewContainer">
+                            <div class="preview">
+                                <img id="generatedImg" src="#" alt="预览" class="image-placeholder" style="visibility: hidden;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 参数调整 -->
+                    <span class="blueprint-label" for="resolution">分辨率: </span>
+                    <input type="range" id="resolution" name="resolution" min="41" max="82" value="50">
+                    <span id="resolutionValue">50</span><br>
+
+                    <span class="blueprint-label" for="threshold">阈  值:</span>
+                    <input type="range" id="threshold" name="threshold" min="0" max="255" value="170">
+                    <span id="thresholdValue">170</span><br>
+
+                    <span class="blueprint-label" for="offsetX">偏移量X:</span>
+                    <input type="range" id="offsetX" name="offsetX" min="-1000" max="1000" value="0">
+                    <span id="offsetXValue">0</span><br>
+
+                    <span class="blueprint-label" for="offsetY">偏移量Y:</span>
+                    <input type="range" id="offsetY" name="offsetY" min="-600" max="600" value="0">
+                    <span id="offsetYValue">0</span><br>
+
+                    <!-- 生成按钮 -->
+                    <button id="generateBlueprint">生成蓝图</button>
+                    <div id="pixelInfo">
+                        <p>线条颜色: <span id="pixelType"></span></p>
+                        <p>需贴纸数: <span id="pixelNum"></span></p>
+                    </div>
+
+
+                </div>
+
+
+
+            </main>
+        </div>
+    </div>
+
+    <script>
+
+
+
+    // 当前选择的时间类型
+    let currentPriceType = '24h';
+
+    // 获取指定服务器的所有物品最新价格
+    async function getLatestPrices() {
+        const server = document.getElementById('server').value;
+        try {
+            const response = await fetch(`http://####:5000/api/latest_prices?server=${server}`);
+            const data = await response.json();
+
+            const priceData = document.getElementById('priceData');
+            if (data.latest_prices.length > 0) {
+                // 按照价格由低到高排序
+                const sortedPrices = data.latest_prices.sort((a, b) => a.price - b.price);
+
+                const html = data.latest_prices.map(item => `
+                    <tr onclick="showPriceHistory('${item.item}')">
+                        <td>${item.item}</td>
+                        <td>${item.quality}</td>
+                        <td>${item.level}</td>
+                        <td>${item.quantity}</td>
+                        <td>${item.price}</td>
+                        <td>${item.server}</td>
+                        <td>${item.timestamp}</td>
+                    </tr>
+                `).join('');
+                priceData.innerHTML = html;
+            } else {
+                priceData.innerHTML = '<tr><td colspan="7">未找到物品价格</td></tr>';
+            }
+        } catch (error) {
+            console.error('Error fetching latest prices:', error);
+            alert('获取最新价格失败，请稍后再试');
+        }
+    }
+
+    // 获取历史价格数据
+    async function fetchHistoricalPrices(item, server) {
+        try {
+            const response = await fetch(`http://####:5000/api/historical_prices?item=${item}&server=${server}&type=${currentPriceType}`);
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching history prices:', error);
+            alert('获取物品历史价格失败，请稍后再试');
+            throw error; // 抛出异常，以便调用者处理
+        }
+    }
+
+    // 销毁旧的图表
+    function destroyOldChart() {
+        if (window.priceChart instanceof Chart) {
+            window.priceChart.destroy();
+        }
+    }
+
+    // 绘制新的折线图
+    function drawNewChart(data, item) {
+        const ctx = document.getElementById('priceChart').getContext('2d');
+        const periods = data.historical_prices.map(entry => entry.period).reverse();
+        const prices = data.historical_prices.map(entry => entry.price).reverse();
+
+        window.priceChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: periods,
+                datasets: [{
+                    label: `${item} 历史价格`,
+                    data: prices,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: { display: true, text: '时间' }
+                    },
+                    y: {
+                        title: { display: true, text: '价格' },
+                        beginAtZero: false
+                    }
+                }
+            }
+        });
+    }
+
+    // 显示Modal并启动滚轮事件监听
+    function showModal(item) {
+        const modal = document.getElementById('priceHistoryModal');
+        const modalTitle = document.getElementById('modalTitle');
+        modalTitle.innerText = `${item} 历史价格 (${currentPriceType})`;
+
+        // 显示Modal
+        modal.style.display = 'block';
+
+        // 启动滚轮事件监听
+        window.addEventListener('wheel', handleWheelEvent);
+    }
+
+    const priceHistoryCache = {};
+
+    // 主函数：显示物品历史价格折线图
+    async function showPriceHistory(item) {
+        const server = document.getElementById('server').value;
+
+        let data;
+
+        // 获取历史价格数据
+        if (priceHistoryCache[`${item}_${server}_${currentPriceType}`]) {
+            // 如果缓存中有数据，直接使用缓存数据
+            const data = priceHistoryCache[`${item}_${server}_${currentPriceType}`];
+
+            // 销毁旧的图表
+            destroyOldChart();
+
+            // 绘制新图表
+            drawNewChart(data, item);
+
+            // 延迟显示弹窗
+            setTimeout(() => {
+                showModal(item);
+            }, 100);  // 延迟 100 毫秒，确保所有操作完成
+
+            return; // 直接返回，避免再次发起请求
+        }
+        // 检查数据是否存在且有效
+        if (!data || !data.historical_prices || data.historical_prices.length === 0) {
+            data = await fetchHistoricalPrices(item, server);
+        }
+
+        // 将获取的数据存入缓存
+        priceHistoryCache[`${item}_${server}_${currentPriceType}`] = data;
+
+        // 销毁旧的图表
+        destroyOldChart();
+
+        // 绘制新图表
+        drawNewChart(data, item);
+
+        // 延迟显示弹窗
+        setTimeout(() => {
+            showModal(item);
+        }, 100);  // 延迟 100 毫秒，确保所有操作完成
+
+    }
+
+
+    // 处理滚轮事件
+    function handleWheelEvent(event) {
+        const priceTypes = ['24h', '7d', '30d'];
+        const index = priceTypes.indexOf(currentPriceType);
+
+        if (event.deltaY < 0) {  // 向上滚动
+            currentPriceType = priceTypes[Math.min(index + 1, priceTypes.length - 1)];
+        } else {  // 向下滚动
+            currentPriceType = priceTypes[Math.max(index - 1, 0)];
+        }
+
+        // 更新图表
+        const item = document.querySelector('.modal-header').innerText.split(' ')[0]; // 获取当前物品
+        showPriceHistory(item);
+    }
+
+    // 关闭Modal并移除滚轮事件监听
+    function closeModal(event) {
+        const modal = document.getElementById('priceHistoryModal');
+        if (event.target === modal || event.target.classList.contains('modal-close')) {
+            modal.style.display = 'none';
+            window.removeEventListener('wheel', handleWheelEvent);  // 移除滚轮事件监听
+        }
+    }
+
+
+        function showPage(pageId) {
+
+            // 隐藏所有页面内容
+            const pages = document.querySelectorAll('.page-content');
+            pages.forEach(page => page.style.display = 'none');
+
+            // 显示对应的页面内容
+            const pageToShow = document.getElementById(pageId + 'Page');
+            if (pageToShow) {
+                pageToShow.style.display = 'block';
+            }
+
+            // 只有点击 tradePage 时才执行查询
+            if (pageId === 'trade') {
+                getLatestPrices();
+            }
+
+            // 只有点击 home 时才执行查询
+            if (pageId === 'home') {
+                getAnnouncement();
+            }
+
+            if (pageId === 'autoPlay') {
+                loadSongList()
+            }
+
+        }
+
+        // 默认显示主页
+        showPage('home');
+
+        function getAnnouncement() {
+            fetch('http://####:5000/api/announcement')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+
+                    // 如果返回数据包含公告内容
+                    if (data && data.message) {
+                        // 获取页面上的公告元素
+                        const announcementElement = document.querySelector('.announcement');
+
+                        // 插入公告内容
+                        announcementElement.innerHTML = data.message;
+
+                        // 可选：如果你想要显示公告的创建时间
+                        const timestamp = data.created_at;
+                        announcementElement.innerHTML += `<br><small>发布于: ${timestamp}</small>`;
+                    } else {
+                        // 如果没有公告，显示默认消息
+                        document.querySelector('.announcement').textContent = '暂无公告';
+                    }
+                })
+                .catch(error => {
+                    console.error('获取公告失败:', error);
+                    document.querySelector('.announcement').textContent = '获取公告失败';
+                });
+        }
+
+        window.onload = function() {
+            document.getElementById('startUploadBtn').onclick = function() {
+                // 调用 Python API 中的方法
+                pywebview.api.auto_upload();
+            }
+            document.getElementById('startUploadBtn2').onclick = function() {
+                // 调用 Python API 中的方法
+                pywebview.api.custom_upload();
+            }
+            document.getElementById('startUploadBtn3').onclick = function() {
+                // 调用 Python API 中的方法
+                pywebview.api.open_with_default_editor();
+            }
+        }
+
+
+        // 获取页面中用于显示输出的 div 元素
+        const outputDiv = document.getElementById('output');
+
+        // 定义一个标志变量来跟踪用户是否手动滚动了输出框
+        let userScrolled = false;
+
+        // 监听用户的滚动行为
+        outputDiv.addEventListener('scroll', function() {
+            // 如果用户手动滚动（即当前滚动位置未到底部），则设置 userScrolled 为 true
+            userScrolled = outputDiv.scrollHeight - outputDiv.scrollTop !== outputDiv.clientHeight;
+        });
+
+
+        // 监听来自其他窗口（如 iframe 或子页面）的消息事件
+        window.addEventListener('message', function(event) {
+            // 检查消息数据是否存在且类型为 'console'
+            if (event.data && event.data.type === 'console') {
+                // 获取页面中用于显示输出的 div 元素
+                const outputDiv = document.getElementById('output');
+
+                // 创建一个新的 p 元素用于显示消息
+                const p = document.createElement('p');
+
+                // 设置 p 元素的文本内容为接收到的消息，使用 textContent 以避免 XSS 攻击
+                p.textContent = event.data.message;
+
+                // 将 p 元素添加到 outputDiv 中
+                outputDiv.appendChild(p);
+
+                // 如果用户没有手动滚动，则自动滚动到最新消息的位置
+                if (!userScrolled) {
+                    outputDiv.scrollTop = outputDiv.scrollHeight;
+                }
+
+
+            }
+        });
+
+    let debounceTimeout;
+    let cachedItems = [];
+
+    function filterItems() {
+        clearTimeout(debounceTimeout);
+
+        debounceTimeout = setTimeout(() => {
+            const searchQuery = document.getElementById('itemSearch').value.toLowerCase();
+
+            // 如果没有缓存的 item 内容，第一次加载时获取并缓存
+            if (cachedItems.length === 0) {
+                const rows = document.querySelectorAll('#priceData tr');
+                cachedItems = Array.from(rows).map(row => row.cells[0].innerText.toLowerCase());
+            }
+
+            const rows = document.querySelectorAll('#priceData tr');
+            rows.forEach((row, index) => {
+                if (cachedItems[index].includes(searchQuery)) {
+                    row.style.display = '';  // 显示匹配的行
+                } else {
+                    row.style.display = 'none';  // 隐藏不匹配的行
+                }
+            });
+        }, 300);  // 防抖，300毫秒延迟执行
+    }
+
+        let statusElement = document.getElementById("status");
+        let selectedFile = null;
+
+        let isPlaying = false; // 当前是否正在播放
+        let isPaused = false; // 当前是否暂停
+
+
+        function loadSongList() {
+            if (!window.pywebview || !window.pywebview.api) {
+                console.error("无法访问 Python 后台 API！");
+                return;
+            }
+
+            window.pywebview.api.get_file_list('MIDI')  // 文件夹路径
+                .then(function(result) {
+                    const songListElement = document.getElementById("songList");
+                    const files = JSON.parse(result);  // 解析文件列表
+
+                    // 清空现有的列表
+                    songListElement.innerHTML = '';
+
+                    // 遍历文件列表并动态生成 HTML
+                    files.forEach(file => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = file;
+
+                        // 单击文件：选中该文件
+                        listItem.addEventListener('click', function() {
+                            if (selectedFile === listItem) {
+                                // 如果已选中，取消选中
+                                selectedFile.classList.remove('selected');
+                                selectedFile = null;
+                            } else {
+                                // 选中当前文件
+                                if (selectedFile) {
+                                    selectedFile.classList.remove('selected');
+                                }
+                                listItem.classList.add('selected');
+                                selectedFile = listItem;
+                            }
+                        });
+
+                        // 双击文件：直接触发play_audio
+                        listItem.addEventListener('dblclick', function() {
+                            const speed = document.getElementById("playbackRate").value;
+                            playAudio(file,speed);  // 直接触发播放
+                        });
+
+                        songListElement.appendChild(listItem);
+                    });
+                })
+                .catch(function(error) {
+                    console.error("Error loading file list: ", error);
+                });
+        }
+
+
+
+
+        function togglePlayPause() {
+            console.log('当前是否暂停: ', isPaused);
+            pywebview.api.pauseAudio();
+        }
+
+        function handlePlaybackStatus(status) {
+            const isPaused = status.isPaused;  // 从后台获取播放状态
+            const statusElement = document.getElementById("status");
+
+            if (isPaused) {
+                statusElement.textContent = "状态: 暂停";
+            } else {
+                statusElement.textContent = "状态: 播放中";
+            }
+        }
+
+        function playAudio(file) {
+            const speed = document.getElementById("playbackRate").value;
+
+            statusElement.textContent = `状态: 播放中 (${speed}x) 文件: ${file}`;
+            pywebview.api.toggle_pause(false);
+            pywebview.api.play_audio(file, speed); // 播放音频
+            isPlaying = true;
+            isPaused = false;
+        }
+
+        // 实时显示播放倍速
+        const playbackRateInput = document.getElementById("playbackRate");
+        const playbackRateValue = document.getElementById("playbackRateValue");
+
+        playbackRateInput.addEventListener('input', function() {
+            playbackRateValue.textContent = `${playbackRateInput.value}x`;
+        });
+
+
+
+        // 以下是自动生成蓝图
+        const originalImg = document.getElementById('originalImg');
+        const generatedImg = document.getElementById('generatedImg');
+        const originalContainer = document.getElementById('originalContainer');
+
+        // 创建并插入文件上传的隐藏 input 元素
+        let uploadImg = document.createElement('input');
+        uploadImg.type = 'file';
+        uploadImg.accept = 'image/*';
+        uploadImg.style.display = 'none';
+        document.body.appendChild(uploadImg); // 确保 input 已插入 DOM
+
+        // 点击原图区域，触发文件上传
+        originalContainer.addEventListener('click', () => {
+            uploadImg.click();
+        });
+
+        // 点击预览区域，触发
+        previewContainer.addEventListener('click', () => {
+            pywebview.api.open_folder();
+        });
+
+        // 监听文件上传变化
+        uploadImg.addEventListener('change', function () {
+            if (uploadImg.files && uploadImg.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    originalImg.src = e.target.result;
+                    originalImg.style.visibility = 'visible'; // 显示图片
+                };
+                reader.readAsDataURL(uploadImg.files[0]);
+
+<!--                // 生成图片预览-->
+<!--                generatedImg.src = e.target.result; // 这里可以替换为实际生成的图像-->
+<!--                generatedImg.style.visibility = 'visible';-->
+            }
+        });
+
+        // 拖拽上传功能
+        originalContainer.addEventListener('dragover', (event) => {
+            event.preventDefault(); // 阻止默认行为
+            originalContainer.style.border = "2px dashed #00ff00"; // 拖拽时显示边框
+        });
+
+        originalContainer.addEventListener('dragleave', () => {
+            originalContainer.style.border = ""; // 拖拽离开时恢复边框
+        });
+
+        originalContainer.addEventListener('drop', (event) => {
+            event.preventDefault();
+            originalContainer.style.border = ""; // 恢复边框
+            const file = event.dataTransfer.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    originalImg.src = e.target.result;
+                    originalImg.style.visibility = 'visible';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        // 为每个参数控制项添加input事件监听器，用于实时更新对应的数值显示
+        ['resolution', 'threshold', 'offsetX', 'offsetY'].forEach(function(controlName) {
+            document.getElementById(controlName).addEventListener('input', function() {
+                document.getElementById(controlName + 'Value').textContent = this.value;  // 更新对应数值显示
+            });
+        });
+
+        // “生成蓝图”按钮点击事件处理逻辑
+        document.getElementById('generateBlueprint').addEventListener('click', function() {
+            const originalImg = document.getElementById('originalImg');
+                // 将图像转换为Base64字符串（去掉"data:image/png;base64,"前缀）
+                const base64Image = originalImg.src.split(',')[1];
+                // 获取所有必要的参数值
+                const x_size = parseInt(document.getElementById('resolution').value, 10);
+                console.log("X Size:", x_size);  // 打印X尺寸
+                const threshold = parseInt(document.getElementById('threshold').value, 10);
+                console.log("Threshold:", threshold);  // 打印阈值
+                const x_offset = parseInt(document.getElementById('offsetX').value, 10);
+                console.log("X Offset:", x_offset);  // 打印X偏移量
+                const y_offset = parseInt(document.getElementById('offsetY').value, 10);
+                console.log("Y Offset:", y_offset);  // 打印Y偏移量
+                pywebview.api.process_image(base64Image, x_size, threshold, x_offset, y_offset)
+                    .then(response => {
+                            // 解析JSON字符串为对象
+                            const responseData = JSON.parse(response);
+
+                            // 设置<img>标签的src属性为"data:image/png;base64," + Base64编码的图片数据
+                            const generatedImg = document.getElementById('generatedImg');
+                            generatedImg.src = "data:image/png;base64," + responseData.encoded_string;
+                            generatedImg.style.visibility = 'visible'; // 显示预览图像
+
+                            // 使用其他返回的数据
+                            document.getElementById('pixelType').textContent = responseData.pixel_type;
+                            document.getElementById('pixelNum').textContent = responseData.pixel_num;
+                    })
+                    .catch(error => {
+                        console.error("Failed to load image:", error);
+                    });
+        });
+
+
+
+
+    </script>
+</body>
+
+</html>
